@@ -1,0 +1,73 @@
+<style>
+  /* Estilo para convertir el dropdown en 2 columnas */
+  .dropdown-menu.two-columns {
+    width: 380px;              /* ancho del menú */
+    padding: 15px;
+  }
+
+  .dropdown-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* dos columnas iguales */
+    column-gap: 20px;
+  }
+
+  .dropdown-columns .column-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  .dropdown-columns a {
+    padding: 4px 0;
+    display: block;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="/">Laboratorio</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="menuUsuario" role="button" data-bs-toggle="dropdown">
+            Menú
+          </a>
+
+          <!-- DROPWDOWN EN DOS COLUMNAS -->
+          <ul class="dropdown-menu dropdown-menu-end two-columns">
+            <div class="dropdown-columns">
+              
+              <!-- COLUMNA IZQUIERDA -->
+              <div>
+                <div class="column-title">Mi Perfil</div>
+                <a class="dropdown-item" href="/mis-datos">Mis Datos</a>
+                <a class="dropdown-item" href="/logout">Cerrar Sesión</a>
+                <a class="dropdown-item" href="/Resultados.html">Descargar Resultados</a>
+              </div>
+
+              <!-- COLUMNA DERECHA -->
+              <div>
+                <div class="column-title">Gestión</div>
+                <a class="dropdown-item" href="/gestionar-citas.html">Gestión Citas</a>
+                <a class="dropdown-item" href="/gestionar-medicos.html">Gestión Médicos</a>
+                <a class="dropdown-item" href="/gestionar-pacientes.html">Gestión Pacientes</a>
+                <a class="dropdown-item" href="/gestionar-usuarios.html">Gestión Usuarios</a>                             
+              </div>
+
+            </div>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

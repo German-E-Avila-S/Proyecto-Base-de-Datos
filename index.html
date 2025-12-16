@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión del laboratorio</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- NAVBAR DINÁMICO -->
+  <div id="navbar"></div>
+
+  <script>
+    fetch('/navbar.html')
+      .then(response => response.text())
+      .then(data => { document.getElementById('navbar').innerHTML = data; })
+      .catch(error => console.error('Error cargando el navbar:', error));
+  </script>
+
+  <!-- MENÚ DINÁMICO POR TIPO DE USUARIO -->
+  <script>
+    fetch('/tipo-usuario')
+      .then(response => response.json())
+      .then(data => {
+
+        const addItem = (html) => {
+          const menu = document.getElementById('menu');
+          if (menu) menu.innerHTML += html;
+        };
+
+        const tipoUsuario = data.tipo_usuario;
+
+        if (tipoUsuario === 'admin') {
+          addItem('<li><a class="dropdown-item" href="/gestionar-citas.html">Gestion Citas</a></li>');
+          addItem('<li><a class="dropdown-item" href="/mis-datos">Mis Datos</a></li>');
+          addItem('<li><a class="dropdown-item" href="/gestionar-usuarios.html">Gestion Usuarios</a></li>');
+          addItem('<li><a class="dropdown-item" href="/gestionar-pacientes.html">Gestion Pacientes</a></li>');
+          addItem('<li><a class="dropdown-item" href="/gestionar-medicos.html">Gestion Medicos</a></li>');
+        } else {
+          addItem('<li><a class="dropdown-item" href="/mis-datos">Mis Datos</a></li>');
+          addItem('<li><a class="dropdown-item" href="/Resultados.html">Mis Resultados</a></li>');
+        }
+
+        addItem('<li><a class="dropdown-item text-danger" href="/logout">Cerrar Sesión</a></li>');
+      })
+      .catch(error => console.error('Error obteniendo el tipo de usuario:', error));
+  </script>
+
+  <!-- CONTENIDO -->
+  <div class="container py-5">
+
+    <h1 class="text-center mb-4">Gestión del Laboratorio</h1>
+
+    <!-- FILA CON TARJETAS -->
+    <div class="row justify-content-center g-4">
+
+      <!-- ========== FORMULARIO PACIENTES ========== -->
+      <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+        <div class="card shadow" style="width: 100%;">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Agregar Paciente</h4>
+          </div>
+
+          <div class="card-body">
+            <form action="/pacientes/agregar" method="POST">
+
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="apellido" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Sexo</label>
+                <select name="sexo" class="form-select" required>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+
+              <button class="btn btn-success w-100">Guardar Paciente</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== FORMULARIO MÉDICOS ========== -->
+      <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+        <div class="card shadow" style="width: 100%;">
+          <div class="card-header bg-dark text-white text-center">
+            <h4 class="mb-0">Agregar Médico</h4>
+          </div>
+
+          <div class="card-body">
+            <form action="/medicos/agregar" method="POST">
+
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="apellido" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Especialidad</label>
+                <input type="text" name="especialidad" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="email" name="correo" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Sueldo</label>
+                <input type="number" name="sueldo" step="0.01" min="0" class="form-control" required>
+              </div>
+
+              <button class="btn btn-primary w-100">Guardar Médico</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== FORMULARIO CITAS ========== -->
+      <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+        <div class="card shadow" style="width: 100%;">
+          <div class="card-header bg-info text-white text-center">
+            <h4 class="mb-0">Agregar Cita</h4>
+          </div>
+
+          <div class="card-body">
+
+            <form action="/citas/agregar" method="POST">
+
+              <div class="mb-3">
+                <label class="form-label">ID del Paciente</label>
+                <input type="number" name="paciente_id" class="form-control" placeholder="Ejemplo: 12" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Fecha y Hora</label>
+                <input type="datetime-local" name="fecha_cita" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Motivo</label>
+                <input type="text" name="motivo" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select name="estado" class="form-select" required>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="completada">Completada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </div>
+
+              <button class="btn btn-info text-white w-100">Guardar Cita</button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TARJETA PARA SUBIR Y DESCARGAR EXCEL ========== -->
+      <div class="col-lg-4 col-md-6 d-flex justify-content-center">
+        <div class="card shadow" style="width:100%;">
+          <div class="card-header bg-success text-white text-center">
+            <h4 class="mb-0">Importar / Exportar pacientes</h4>
+          </div>
+
+          <div class="card-body">
+
+            <a href="/download-pacientes" class="btn btn-outline-success w-100 mb-3">
+              Descargar Excel de Citas
+            </a>
+
+            <form action="/upload-pacientes" method="POST" enctype="multipart/form-data">
+
+              <label class="form-label">Subir archivo Excel</label>
+              <input type="file" name="excelFile" accept=".xlsx,.xls" class="form-control mb-3" required>
+
+              <button class="btn btn-success w-100">Subir y Registrar</button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div> <!-- row -->
+
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
